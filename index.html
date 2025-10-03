@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraud Detection System - ML-Powered Transaction Security</title>
+    <meta name="description" content="Advanced machine learning fraud detection system for secure transaction analysis">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <!-- Navigation (hidden on login/register) -->
+    <nav id="navigation" class="nav-bar hidden">
+        <div class="nav-container">
+            <a href="#dashboard" class="nav-brand">
+                <div class="nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <span class="nav-title">Fraud Detection Dashboard</span>
+            </a>
+            <div class="nav-actions">
+                <button class="btn btn-ghost" onclick="showHistory()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v5h5"></path>
+                        <path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"></path>
+                        <path d="M12 7v5l4 2"></path>
+                    </svg>
+                    History
+                </button>
+                <button class="btn btn-outline-danger" onclick="logout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Page -->
+    <div id="login-page" class="page-container">
+        <div class="auth-card glass-card">
+            <div class="auth-header">
+                <div class="auth-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <h1 class="auth-title">Fraud Detection System</h1>
+                <p class="auth-description">Sign in to access your security dashboard</p>
+            </div>
+            <div class="auth-content">
+                <div id="login-error" class="alert alert-error hidden"></div>
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" placeholder="Enter your username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-text">Login</span>
+                        <span class="btn-loading hidden">Signing in...</span>
+                    </button>
+                    <p class="auth-footer">
+                        Don't have an account? <a href="#register" class="link-primary">Register here</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register-page" class="page-container hidden">
+        <div class="auth-card glass-card">
+            <div class="auth-header">
+                <div class="auth-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <h1 class="auth-title">Create an Account</h1>
+                <p class="auth-description">Join our fraud detection platform</p>
+            </div>
+            <div class="auth-content">
+                <div id="register-error" class="alert alert-error hidden"></div>
+                <div id="register-success" class="alert alert-success hidden"></div>
+                <form id="register-form" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input type="text" id="register-username" placeholder="Choose a username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" placeholder="Create a secure password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-text">Register</span>
+                        <span class="btn-loading hidden">Creating account...</span>
+                    </button>
+                    <p class="auth-footer">
+                        Already have an account? <a href="#login" class="link-primary">Login here</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page-container-full hidden">
+        <main class="main-container">
+            <div class="card glass-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                        Analyze a New Transaction
+                    </h2>
+                    <p class="card-description">Enter transaction details for fraud analysis</p>
+                </div>
+                <div class="card-content">
+                    <form id="prediction-form" onsubmit="handlePredict(event)">
+                        <div class="form-grid" id="prediction-fields"></div>
+                        <button type="submit" class="btn btn-primary btn-full btn-large">
+                            <span class="btn-text">Predict Fraud</span>
+                            <span class="btn-loading hidden">Analyzing...</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- History Page -->
+    <div id="history-page" class="page-container-full hidden">
+        <main class="main-container">
+            <div class="card glass-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 3v5h5"></path>
+                            <path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"></path>
+                            <path d="M12 7v5l4 2"></path>
+                        </svg>
+                        Your Prediction History
+                    </h2>
+                    <p class="card-description">View all your past fraud detection analyses</p>
+                </div>
+                <div class="card-content">
+                    <div id="history-loading" class="loading-state">Loading history...</div>
+                    <div id="history-empty" class="empty-state hidden">
+                        No predictions yet. Start analyzing transactions!
+                    </div>
+                    <div id="history-table-container" class="table-container hidden">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Result</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="modal hidden">
+        <div class="modal-backdrop" onclick="closeResultModal()"></div>
+        <div id="result-modal-content" class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="result-title" class="modal-title"></h3>
+            </div>
+            <div class="modal-body">
+                <div id="result-message" class="result-box"></div>
+            </div>
+            <button class="btn btn-secondary btn-full" onclick="closeResultModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="static/api.js"></script>
+    <script src="static/auth.js"></script>
+    <script src="static/app.js"></script>
+</body>
+</html>

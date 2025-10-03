@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # This is our Flask application service
+  web:
+    build: . # Build the image from the Dockerfile in the current directory
+    container_name: fraud-detection-web
+    ports:
+      - "5000:8000" # Connect port 5000 on our computer to port 8000 in the container
+    volumes:
+      - .:/app # This mounts your local code into the container for live-reloading
+    environment:
+      # Pass the database connection details to the Flask app
+      - DATABASE_URL=postgresql://myuser:mypassword@db/mydatabase
+    depends_on:
+      - db # Tell Docker to start the database before starting the web app
+
+  # This is our PostgreSQL database service
+  db:
+    image: postgres:13 # Use an official PostgreSQL image
+    container_name: fraud-detection-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydatabase
+    ports:
+      - "5432:5432" # Connect to the database from your local machine if needed
+
+volumes:
+  postgres_data:
